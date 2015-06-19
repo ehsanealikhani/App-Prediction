@@ -34,9 +34,9 @@ column(4, align="auto",
   fluidRow(
     column(2,offset = 0,
       h3("Acquisition"),
-      sliderInput("w1install", label = h5("First Week, Ave Daily Install"), min = 50000, max = 200000, value = 100000,step = 500, round = TRUE),
-      sliderInput("m1install", label = h5("Week 2-4, Ave Daily Install"), min = 5000, max = 100000, value = 8000,step = 500, round = TRUE),
-      sliderInput("y1install", label = h5("Month 2-12 Average Daily Install"), min = 2000, max = 15000, value = 2500,step = 500, round = TRUE)
+      sliderInput("w1install", label = h5("First Week, Ave Daily Install"), min = 50000, max = 200000, value = 120000,step = 500, round = TRUE),
+      sliderInput("m1install", label = h5("Week 2-4, Ave Daily Install"), min = 5000, max = 100000, value = 10000,step = 500, round = TRUE),
+      sliderInput("y1install", label = h5("Month 2-12 Average Daily Install"), min = 2000, max = 15000, value = 4500,step = 500, round = TRUE)
     ),
     
     column(2,offset = 0,
@@ -48,16 +48,16 @@ column(4, align="auto",
 
     column(2,offset = 0,
       h3("Conversion"),
-     sliderInput("d1conversion", label = h5("D1 Conversion"), value = 0.9, min = 0, max = 5,step = 0.1),
-  sliderInput("d5conversion", label = h5("D5  Conversion"), value = 1.1, min = 0, max = 10,step = 0.1),
-  sliderInput("d30conversion", label = h5("D30 Conversion"), value = 2.5, min = 0, max = 15,step = 0.1)
+     sliderInput("d1conversion", label = h5("D1 Conversion"), value = 1.1, min = 0, max = 5,step = 0.1),
+  sliderInput("d5conversion", label = h5("D5  Conversion"), value = 1.5, min = 0, max = 10,step = 0.1),
+  sliderInput("d30conversion", label = h5("D30 Conversion"), value = 3.9, min = 0, max = 15,step = 0.1)
     ),
 
   column(2, offset = 0,
       h3("Revenue"),
       sliderInput("d1ltv", label = h5("D1 LTV"), value = 10,step = 2, min = 0, max = 60),
       sliderInput("d5ltv", label = h5("D5  LTV"), value = 20,step = 2, min = 0, max = 60),
-      sliderInput("d30ltv", label = h5("D30 LTV"), value = 30,step = 2, min = 0, max = 200)
+      sliderInput("d30ltv", label = h5("D30 LTV"), value = 35,step = 2, min = 0, max = 200)
     ),
 
 column(4, offset = 0,
