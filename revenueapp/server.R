@@ -26,9 +26,10 @@ shinyServer(function(input, output) {
             produced_dau = retention * install[i]/100
             q = 1
             for (j in i:365 ) {
-              dau[j] <- dau[j] + produced_dau[q]
+              dau[j+1] <- dau[j+1] + produced_dau[q]
               q = q + 1
             }}
+          dau = dau[1:365] + install
            
           x = max(dau[1:365])/1000
           y2 = dau[360]
@@ -73,9 +74,10 @@ shinyServer(function(input, output) {
             produced_dau = retention * install[i]/100
             q = 1
             for (j in i:365 ) {
-              dau[j] <- dau[j] + produced_dau[q]
+              dau[j+1] <- dau[j+1] + produced_dau[q]
               q = q + 1
             }}
+          dau = dau[1:365] + install
       dau = as.integer(dau)
       write.csv(dau, file)
     }
@@ -279,9 +281,10 @@ shinyServer(function(input, output) {
             produced_dau = retention * install[i]/100
             q = 1
             for (j in i:365 ) {
-              dau[j] <- dau[j] + produced_dau[q]
+              dau[j+1] <- dau[j+1] + produced_dau[q]
               q = q + 1
             }}
+            dau = dau[1:365] + install
             ######
             ######
             ######
