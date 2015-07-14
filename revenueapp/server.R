@@ -46,6 +46,114 @@ shinyServer(function(input, output) {
 
      })
 
+  output$downloadData <- downloadHandler(
+    filename = function() { 'DAU.csv' },
+    content = function(file) {
+      dau <- list(rep(0, 365))
+           dau <- dau[[1]]
+           #######
+           d1reten <- input$d1reten
+           d5reten <- input$d5reten
+           d30reten <- input$d30reten
+           w1install <- input$w1install
+           m1install <- input$m1install
+           y1install <- input$y1install
+           install <- c(list(rep(w1install, 7))[[1]], list(rep(m1install, 23))[[1]], list(rep(y1install, 335))[[1]])
+          #Retention Data
+          xdata = c(1,5,30)
+          retendata = c(d1reten,d5reten,d30reten)
+          f1 <- function(x, a, b) {
+              a * log(x) + b
+          }
+          fit1 = nls(log(retendata) ~ f1(xdata, a,b), start=list(a=2, b = 1))
+          retention <- predict(fit1,newdata=data.frame(xdata = seq(1,365,len=365)))
+          retention = exp(1) ^ retention
+           #Add to base dau lisr
+           for (i in 1:365 ) {
+            produced_dau = retention * install[i]/100
+            q = 1
+            for (j in i:365 ) {
+              dau[j] <- dau[j] + produced_dau[q]
+              q = q + 1
+            }}
+      dau = as.integer(dau)
+      write.csv(dau, file)
+    }
+    )
+
+
+  output$downloadData2 <- downloadHandler(
+    filename = function() { 'Revenue_Trend.csv' },
+    content = function(file) {
+                dailyrevenue <- list(rep(0, 365))
+           dailyrevenue <- dailyrevenue[[1]]
+           dailypayers <- list(rep(0, 365))
+           dailypayers <- dailypayers[[1]]
+           d1ltv <- input$d1ltv
+           d5ltv <- input$d5ltv
+           d30ltv <- input$d30ltv
+           #######
+           d1conversion <- input$d1conversion
+           d5conversion <- input$d5conversion
+           d30conversion <- input$d30conversion
+           #######
+           w1install <- input$w1install
+           m1install <- input$m1install
+           y1install <- input$y1install
+           install <- c(list(rep(w1install, 7))[[1]], list(rep(m1install, 23))[[1]], list(rep(y1install, 335))[[1]])
+          #Retention Data
+          xdata = c(1,5,30)
+          ltvdata = c(d1ltv,d5ltv,d30ltv)
+          conversiondata = c(d1conversion,d5conversion,d30conversion)
+          #Predicting retention
+          f2 <- function(x, a, b) {
+              a * x + b
+          }
+          fit2 = nls(ltvdata ~ f2(log(xdata), a,b), start=list(a=20, b = 50))
+          ltv <- predict(fit2,newdata=data.frame(xdata = seq(1,365,len=365)))
+          ###
+          fit3 = nls(conversiondata ~ f2(log(xdata), a,b), start=list(a=0.5, b = 2))
+          conversion <- predict(fit3,newdata=data.frame(xdata = seq(1,365,len=365)))
+          ###Comulative
+          conv <- list(rep(0, 365))
+          conv <- conv[[1]]
+          for (i in 2:365 ) {conv[i] <- conversion[i] - conversion[i-1] }
+          conv <- c(c(conversion[1]),conv[2:365])
+          #
+          lt <- list(rep(0, 365))
+          lt <- lt[[1]]
+          for (i in 2:365 ) {lt[i] <- ltv[i] - ltv[i-1] }
+          lt <- c(c(ltv[1]),lt[2:365])
+
+
+           #Calculate First Time Daily Payers
+          for (i in 1:365 ) {
+            prodeced_payer = conv * install[i]/100
+            q = 1
+            for (j in i:365 ) {
+              dailypayers[j] <- dailypayers[j] + prodeced_payer[q]
+              q = q + 1
+            }
+          }
+
+          for (i in 1:365 ) {
+            produced_revenue = lt * dailypayers[i]
+            q = 1
+            for (j in i:365 ) {
+              dailyrevenue[j] <- dailyrevenue[j] + produced_revenue[q]
+              q = q + 1
+            }
+
+          }
+      dailyrevenue = as.integer(dailyrevenue)
+      write.csv(dailyrevenue, file)
+    }
+    )
+
+
+
+
+
   output$Plot2 <- renderPlot({ 
            dailyrevenue <- list(rep(0, 365))
            dailyrevenue <- dailyrevenue[[1]]

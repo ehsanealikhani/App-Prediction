@@ -26,8 +26,6 @@ column(4, align="auto",
 #   ),
 
 
-
-
   #plotOutput('Plot3',height = 250, width = 'auto'),
   #tableOutput('suggestion'),
 
@@ -61,7 +59,16 @@ column(4, align="auto",
     ),
 
 column(4, offset = 0,
-      h3("*****************************",align="center"),
+      #h3("*****************************",align="center"),
+      fluidRow(
+      column(6, align="center",
+    downloadButton('downloadData', 'Download DAU')
+   ),
+
+column(6, align="auto",
+    downloadButton('downloadData2', 'Download Revenue    ')
+   )
+      ),
       plotOutput('suggestion')
     )
 
